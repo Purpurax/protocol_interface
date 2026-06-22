@@ -6,6 +6,7 @@ default-run = "protocol"
 
 [dependencies]
 actix-web = "4.13.0"
+memchr = "2.8.2"
 
 [[bin]]
 name = "protocol"

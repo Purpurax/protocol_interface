@@ -45,6 +45,10 @@ As a side note the functions also have a global scope of basic variables like th
 ### Documentation (log)
 The chronological events that took place with what material through which instructions lead to this result. This can't be done fully through code but the whole process description could be fully automated into natural language. So for each function the types must be logged. Either you have a continuous text format that completes over time, or you do it all at once.
 
-## Users
-### Biomation
-The system should be usable by the machines that allow for automation. The precomputation should be done by them
+## Features
+- Protocol creation:
+    - Web interface
+- Protocol parsing:
+    - 
+- Protocol processing:
+

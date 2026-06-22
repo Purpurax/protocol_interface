@@ -1,3 +1,5 @@
+use std::ops::{Add, Index};
+
 use crate::core::units::{biological::{ExtinctionCoefficient280, OligomericState}, chemical::{Acidity, Dalton}};
 
 
@@ -38,11 +40,34 @@ pub struct Properties {
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct Proteins(pub Vec<Protein>);
+
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Protein {
     pub id: u64,
     pub amount: u64,
-    pub amount_error: f64,
     pub name: String,
+}
+
+impl Add<Proteins> for Proteins {
+    type Output = Proteins;
+    fn add(mut self, other: Proteins) -> Self::Output {
+        for other_protein in other.0.into_iter() {
+            let mut protein_was_added = false;
+            for protein in self.0.iter_mut() {
+                if protein.id == other_protein.id {
+                    protein_was_added = true;
+                    protein.amount + other_protein.amount;
+                    break;
+                }
+            }
+            if !protein_was_added {
+                self.0.push(other_protein);
+            }
+        }
+
+        self
+    }
 }
 
 impl From<char> for AminoAcid {

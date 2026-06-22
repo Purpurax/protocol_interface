@@ -1,4 +1,4 @@
-use crate::core::{material::{chemical::Solution, protein::Protein}, units::{chemical::Acidity, physical::Temperature}};
+use crate::core::{material::{chemical::Solution, protein::{Protein, Proteins}}, units::{chemical::Acidity, physical::Temperature}};
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub enum GramStain {
@@ -59,12 +59,12 @@ pub struct Organism {
     pub species: String,
     pub strain: Option<String>,
     pub containing_solution: Solution,
-    pub containing_proteins: Vec<Protein>,
+    pub containing_proteins: Proteins,
     pub properties: OrganismProperties
 }
 
 impl Organism {
-    pub fn autoclave_destruction(self) -> (Solution, Vec<Protein>) {
+    pub fn autoclave_destruction(self) -> (Solution, Proteins) {
         (self.containing_solution, self.containing_proteins)
     }
 }

@@ -10,6 +10,6 @@ pub mod protein;
 pub struct Material {
     pub id: u64,
     pub solution: Solution,
-    pub proteins: Vec<Protein>,
+    pub proteins: Proteins,
     pub organisms: Vec<Organism>
 }
