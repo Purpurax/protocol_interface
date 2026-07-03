@@ -4,6 +4,7 @@ use crate::core::units::{Unit, physical::{Duration, Mass, Temperature, Volume}};
 
 pub mod instruction;
 pub mod material;
+pub mod parser;
 pub mod units;
 
 #[derive(Debug, Clone)]

@@ -1,8 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
 use crate::core::units::Unit;
-use crate::parser::scanner::{KeywordKind, LiteralKind};
-use crate::parser::scanner::{Token, TokenKind};
+use crate::core::parser::scanner::{KeywordKind, LiteralKind};
+use crate::core::parser::scanner::{Token, TokenKind};
 
 use GrammarExpandableKind as expk;
 use GrammarNode::Expandable as exp;
