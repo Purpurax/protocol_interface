@@ -32,10 +32,11 @@ pub type MolecularFormula = String;
 pub struct Concentration(pub f64);
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+/// Always in gram per mol
 pub struct Mol(pub f64);
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
-/// Always in gram per mol
+/// Always in gram per liter
 pub struct Molar(pub f64);
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]

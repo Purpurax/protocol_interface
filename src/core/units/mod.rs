@@ -7,6 +7,18 @@ pub mod physical;
 pub mod biological;
 
 
+#[derive(PartialEq, Debug, Clone, Eq, Hash, Copy)]
+pub enum Unit { // Used for parsing as well (not clean)
+    Temperature,
+    Duration,
+    Mass,
+    Volume,
+    OD,
+    CentrifugalForce,
+    Molar,
+    ColonyCount
+}
+
 /* --- From into --- */
 impl From<f64> for Mass {
     fn from(mg: f64) -> Self { Mass(mg) }
