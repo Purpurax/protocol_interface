@@ -1,0 +1,109 @@
+:root {
+    --bg: #eeeeee;
+    --surface: #dddddd;
+    --surface-2: #cccccc;
+    --border: #2a3146;
+    --text: #121624;
+    --text-muted: #c8cde0;
+    --accent: #ff5fa2;
+    --accent-2: #ff8fc4;
+    --hover: #1e2438;
+    --green: #4caf50;
+    --red: #f44336;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#main {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.main-content {
+    height: 100vh;
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.overview_panel {
+    background-color: var(--surface);
+    width: 80%;
+    height: 80%;
+    display: grid;
+    margin: 10%;
+    align-items: center;
+}
+
+.overview_items {
+    display: block;
+    overflow-y: auto;
+}
+
+.overview_item {
+    background-color: var(--surface-2);
+    display: flex;
+    width: 94%;
+    padding-left: 3%;
+    padding-right: 3%;
+    font-size: 30px;
+}
+.overview_item > * {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.overview_item_icons {
+    margin-left: auto;
+    margin-right: 0;
+}
+.overview_item_icons > * {
+    padding-left: 10px;
+}
+
+.confirmation_panel {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.run_panel {
+    background-color: var(--surface);
+    width: 80%;
+    height: 80%;
+    display: grid;
+    margin: 10%;
+    align-items: center;
+}
+
+.run_protocol_description {
+    margin-left: 40px;
+}
+
+.run_protocol_instruction {
+    background-color: var(--surface-2);
+}
+.run_protocol_instruction_done {
+    color: var(--text-muted);
+}
+.run_protocol_instruction_highlighted {
+    background-color: var(--green);
+}

@@ -1,11 +1,10 @@
 pub mod log;
-pub mod core;
 
 use std::env;
 use std::fs;
 use std::path::Path;
 
-use crate::core::parser::parse_protocol;
+use protocol_lib::core::parser::parse_protocol;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
