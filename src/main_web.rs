@@ -4,6 +4,10 @@ use web::run::Run;
 
 pub mod web;
 
+pub static PROTOCOL_FOLDER: [Asset; 1] = [
+    asset!("/web_assets/protocols/m9.wet"),
+];
+
 #[rustfmt::skip]
 #[derive(Clone, Debug, PartialEq, Routable)]
 pub enum Route {

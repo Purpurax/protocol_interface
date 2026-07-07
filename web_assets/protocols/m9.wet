@@ -1,0 +1,28 @@
+author Purpurax
+version 0.0.1
+name M9
+
+global_temperature 25°C
+global_humidity 50%
+
+define $0.1l as total_volume
+
+define @962 as distilled_water
+define @6096963 as disodium_hydrogen_phosphate
+define @516951 as monopotassium_phosphate
+define @5234 as salt
+define @25517 as ammonium_chloride
+
+define #1 as flask
+
+transfer (0.6 * total_volume) of distilled_water into flask
+transfer ((128g / 1l) * total_volume) of disodium_hydrogen_phosphate into flask
+transfer ((30g / 1l) * total_volume) of monopotassium_phosphate into flask
+transfer ((5g / 1l) * total_volume) of salt into flask
+transfer ((10g / 1l) * total_volume) of ammonium_chloride into flask
+fill flask to (1.0 * total_volume) using distilled_water
+
+temperature flask to 50°C
+
+wait ~20min
+wait (20ms + 3s)

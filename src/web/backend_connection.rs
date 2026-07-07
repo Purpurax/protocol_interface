@@ -1,67 +1,90 @@
-use dioxus::hooks::{Resource, use_resource};
-use protocol_lib::core::Protocol;
+use std::{collections::HashMap, hash::{DefaultHasher, Hash, Hasher}};
 
-const DATABASE_URL_REST: &str = "http://127.0.0.1:7777";
+use dioxus::{hooks::{Resource, use_resource}, logger::tracing::warn, signals::Signal};
+use protocol_lib::core::{Protocol, units::Unit};
+
+use crate::PROTOCOL_FOLDER;
+
+// const DATABASE_URL_REST: &str = "http://127.0.0.1:7777";
+
+/// Currently using Fake instead of DB
 
 pub fn get_protocol_names() -> Resource<Vec<(String, u64)>> {
     use_resource(move || async move {
-        // let response = reqwest::Client::new()
-        //     .get(format!("{}/protocol/names", DATABASE_URL))
-        //     .send()
-        //     .await;
-        // if let Ok(response_value) = response {
-        //     if let Ok(balance) = response_value.json::<i64>().await {
-        //         return format!("{}.{:02}€", balance / 100, (balance % 100).abs());
+        get_all_file_protocol_content(None)
+            .await
+            .into_iter()
+            .map(|protocol| {
+                let mut hasher = DefaultHasher::new();
+                protocol.name.hash(&mut hasher);
+                (protocol.name.clone(), hasher.finish())
+            })
+            .map(|(str, id)| (str.to_string(), id))
+            .collect::<Vec<(String, u64)>>()
+
+        // async move {
+        //     let response = reqwest::Client::new()
+        //         .get(format!("{}/protocol/names", DATABASE_URL))
+        //         .send()
+        //         .await;
+        //     if let Ok(response_value) = response {
+        //         if let Ok(balance) = response_value.json::<i64>().await {
+        //             return format!("{}.{:02}€", balance / 100, (balance % 100).abs());
+        //         }
         //     }
         // }
-        vec![
-            ("Example", 1),
-            ("Example 2", 2),
-            ("Example 3", 3),
-            ("Example 4", 4),
-            ("Example 5", 5),
-            ("Example 6", 6),
-            ("Example 7", 7),
-            ("Example 8", 8),
-        ].into_iter()
-        .map(|(str, id)| (str.to_string(), id))
-        .collect()
     })
 }
 
-pub fn get_protocol() -> Resource<Protocol> {
+pub fn get_protocol(id: u64, variables: Signal<HashMap<String, (u64, Unit)>>) -> Resource<Protocol> {
     use_resource(move || async move {
-        let example_protocol = "
-author Purpurax
-version 0.0.1
-name M9_Media
+        let first = get_all_file_protocol_content(Some(variables))
+            .await
+            .into_iter()
+            .filter(|protocol| {
+                let mut hasher = DefaultHasher::new();
+                protocol.name.hash(&mut hasher);
+                id == hasher.finish()
+            })
+            .next();
+        
+        match first {
+            Some(val) => val,
+            None => Protocol::new("Invalid ID")
+        }
+    }) 
+}
 
-global_temperature 25°C
-global_humidity 50%
+async fn get_all_file_protocol_content(variables_opt: Option<Signal<HashMap<String, (u64, Unit)>>>) -> Vec<Protocol> {
+    let identity_function: fn(f64) -> f64 = |x| x;
 
-define $1l as total_volume
-define $1mg as tmp
+    let mut contents = vec![];
+    for file in PROTOCOL_FOLDER.into_iter() {
+        if let Ok(bytes) = dioxus::asset_resolver::read_asset_bytes(&file).await {
+            if let Ok(content) = std::str::from_utf8(&bytes) {
+                contents.push(content.to_string());
+            }
+        }
+    }
 
-define @962 as distilled_water
-define @6096963 as disodium_hydrogen_phosphate
-define @516951 as monopotassium_phosphate
-define @5234 as salt
-define @25517 as ammonium_chloride
-
-define #1 as flask
-
-transfer (0.6ul * total_volume) of distilled_water into flask
-transfer (128g * tmp) of disodium_hydrogen_phosphate into flask
-transfer (30g * tmp) of monopotassium_phosphate into flask
-transfer (5g * tmp) of salt into flask
-transfer (10g * tmp) of ammonium_chloride into flask
-fill flask to total_volume using distilled_water
-
-temperature flask to 50°C
-
-wait ~20min
-wait (20ms + 3s)
-        ";
-        Protocol::from(example_protocol)
-    })
+    contents.into_iter()
+        .map(|content| {
+            let mut protocol = Protocol::empty();
+            // if let Some(variables) = variables_opt {
+            //     protocol.definitions_variables = (*variables.read_unchecked()).clone().into_iter()
+            //         .map(|(key, (value, unit))|
+            //             (key, (value, identity_function.clone(), unit))
+            //         )
+            //         .collect::<HashMap<String, (u64, fn(f64) -> Unit)>>();
+            // }
+            let result = protocol.parse(&content);
+            if let Err(err) = result {
+                warn!(content);
+                warn!(err);
+            } else {
+                warn!("WORKED {:?}", protocol);
+            }
+            protocol
+        })
+        .collect::<Vec<Protocol>>()
 }
