@@ -7,8 +7,8 @@ default-run = "web"
 [dependencies]
 protocol_lib = { path = "../protocol_lib" }
 # actix-web = "4.14.0"
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.149"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
 dioxus = { version = "0.7.1", features = ["router"] }
 dioxus-icons = "0.1.0"
 reqwest = { version = "0.13.4", features = ["json"] }
@@ -25,13 +25,5 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 
 [[bin]]
-name = "protocol"
-path = "src/main.rs"
-
-[[bin]]
 name = "web"
-path = "src/main_web.rs"
-
-[[bin]]
-name = "server"
-path = "src/main_server.rs"
+path = "src/main.rs"

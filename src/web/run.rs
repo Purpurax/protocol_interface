@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
 use dioxus::prelude::*;
-use protocol_lib::core::{Amount, Instruction, Protocol, units::{Unit, physical::Volume}};
+use protocol_lib::core::{Amount, Instruction, MixedId, Protocol, units::{UnitIntermediate, physical::Volume}};
 
-use crate::{Route, web::backend_connection::get_protocol};
+use crate::{Route, web::{backend_connection::get_protocol, middleware::get_chemical_name}};
 
 #[component]
 pub fn Run(id: u64) -> Element {
@@ -49,29 +49,29 @@ pub fn Run(id: u64) -> Element {
 }
 
 #[component]
-fn run_definitions_editable(variables: Signal<HashMap<String, (u64, Unit)>>, protocol: Protocol) -> Element {
+fn run_definitions_editable(variables: Signal<HashMap<String, f64>>, protocol: Protocol) -> Element {
     rsx! {{
         let mut vec = protocol.definitions_variables.into_iter()
-            .collect::<Vec<(String, (u64, fn(f64) -> Unit))>>();
+            .collect::<Vec<(String, UnitIntermediate)>>();
         vec.sort_by(|(ident, _), (ident_2, _)| ident.cmp(ident_2));
         vec.into_iter()
-            .map(|(ident, (value, conversion))| rsx! {
+            .map(|(ident, value)| rsx! {
                 div {
                     "Definition: {ident} = ",
                     input {
-                        value: format!("{}", conversion(value as f64)),
+                        value: format!("{:?}", value.get_factor()),
                         oninput: move |e| {
                             let value_str = e.value();
-                            match value_str.parse::<u64>() {
+                            match value_str.parse::<f64>() {
                                 Ok(val) => {
-                                    // (*variables.write()).insert(ident.clone(), (val, unit.clone()));
+                                    (*variables.write()).insert(ident.clone(), val);
                                     // info!("{:?}", *variables.read());
                                 },
                                 Err(_) => (),
                             }
                         }
                     },
-                    // {format!("  {:?}", unit)}
+                    {format!("  {:?}", value)}
                 }
             })
     }}
@@ -83,13 +83,10 @@ fn run_instruction_list(instruction_step_counter: Signal<usize>, protocol: Proto
     let instruction_collection = protocol.instructions.clone().into_iter()
         .map(|instruction| {
             match instruction {
-                Instruction::Mix { amount, material_id, into_container_id } =>
-                    vec![format!("--Mix-is-outdated--")],
+                Instruction::Autoclave { container_id, duration } =>
+                    vec![format!("Autoclave {} for {}", format_container_id(&protocol, container_id), duration)],
 
-                Instruction::Autoclave { container_id, time } =>
-                    vec![format!("Autoclave {} for {}", format_container_id(&protocol, container_id), time)],
-
-                Instruction::Transfer { amount, from_container_id, into_container_id } =>
+                Instruction::Transfer { amount, from_id, into_container_id } =>
                     vec![
                         match amount {
                             Amount::Volume(volume) => format_pipette_take(volume),
@@ -97,19 +94,25 @@ fn run_instruction_list(instruction_step_counter: Signal<usize>, protocol: Proto
                         },
                         format!("Take {} from {} and put it into {}",
                             amount,
-                            format_container_id(&protocol, from_container_id),
+                            match from_id {
+                                MixedId::Container(container_id) => format_container_id(&protocol, container_id),
+                                MixedId::Material(material_id) => format_material_id(&protocol, material_id)
+                            },
                             format_container_id(&protocol, into_container_id)
                         )
                     ],
 
-                Instruction::Fill { amount, from_container_id, into_container_id } =>
+                Instruction::Fill { amount, from_id, into_container_id } =>
                     vec![
                         match amount {
                             Amount::Volume(volume) => format_pipette_take(volume),
                             Amount::Mass(_) => String::from("Use a spoon")
                         },
                         format!("Fill {} using {} up to {}",
-                            format_container_id(&protocol, from_container_id),
+                            match from_id {
+                                MixedId::Container(container_id) => format_container_id(&protocol, container_id),
+                                MixedId::Material(material_id) => format_material_id(&protocol, material_id)
+                            },
                             format_container_id(&protocol, into_container_id),
                             amount
                         )
@@ -161,7 +164,17 @@ fn format_container_id(protocol: &Protocol, id: u64) -> String {
             return ident.clone()
         }
     }
-    format!("@{}", id)
+    format!("#{}", id)
+}
+
+fn format_material_id(protocol: &Protocol, id: u64) -> String {
+    for (ident, container_id) in protocol.definitions_containers.iter() {
+        if *container_id == id {
+            return ident.clone()
+        }
+    }
+    let name = get_chemical_name(id);
+    format!("@{}", name)
 }
 
 fn format_pipette_take(volume: Volume) -> String {
