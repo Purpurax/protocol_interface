@@ -158,23 +158,24 @@ fn run_instruction_list(instruction_step_counter: Signal<usize>, protocol: Proto
     }
 }
 
-fn format_container_id(protocol: &Protocol, id: u64) -> String {
-    for (ident, container_id) in protocol.definitions_containers.iter() {
-        if *container_id == id {
-            return ident.clone()
+fn format_container_id(protocol: &Protocol, id: u64) -> Signal<String> {
+    use_signal(|| {
+        for (ident, container_id) in protocol.definitions_containers.iter() {
+            if *container_id == id {
+                return ident.clone()
+            }
         }
-    }
-    format!("#{}", id)
+        format!("#{}", id)
+    })
 }
 
-fn format_material_id(protocol: &Protocol, id: u64) -> String {
+fn format_material_id(protocol: &Protocol, id: u64) -> Signal<String> {
     for (ident, container_id) in protocol.definitions_containers.iter() {
         if *container_id == id {
-            return ident.clone()
+            return use_signal(|| ident.clone())
         }
     }
-    let name = get_chemical_name(id);
-    format!("@{}", name)
+    return get_chemical_name(id)
 }
 
 fn format_pipette_take(volume: Volume) -> String {
