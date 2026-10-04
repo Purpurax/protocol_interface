@@ -88,10 +88,10 @@ fn run_instruction_list(instruction_step_counter: Signal<usize>, protocol: Proto
 
                 Instruction::Transfer { amount, from_id, into_container_id } =>
                     vec![
-                        match amount {
-                            Amount::Volume(volume) => format_pipette_take(volume),
-                            Amount::Mass(_) => String::from("Use a spoon")
-                        },
+                        // match amount {
+                        //     Amount::Volume(volume) => format_pipette_take(volume),
+                        //     Amount::Mass(_) => String::from("Use a spoon")
+                        // },
                         format!("Take {} from {} and put it into {}",
                             amount,
                             match from_id {

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, hash::{DefaultHasher, Hash, Hasher}};
 
-use dioxus::{hooks::{Resource, use_resource}, signals::{ReadableExt, Signal}};
+use dioxus::{hooks::{Resource, use_resource}, logger::tracing::info, signals::{ReadableExt, Signal}};
 use protocol_lib::core::{Protocol, units::UnitIntermediate};
 
 use crate::PROTOCOL_FOLDER;
@@ -48,6 +48,7 @@ async fn get_all_file_protocol_content(variables_opt: Option<Signal<HashMap<Stri
             }
         }
     }
+    info!("{:?}", contents.len());
 
     contents.into_iter()
         .map(|content| {
