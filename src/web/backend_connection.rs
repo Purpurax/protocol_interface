@@ -1,7 +1,6 @@
 use std::{collections::HashMap, hash::{DefaultHasher, Hash, Hasher}};
 
 use dioxus::{hooks::{Resource, use_resource}, logger::tracing::info, signals::{ReadableExt, Signal}};
-use protocol_lib::core::{Protocol, units::UnitIntermediate};
 
 use crate::PROTOCOL_FOLDER;
 
