@@ -1,0 +1,114 @@
+/* Interface themes. The 3D world has its own, independent themes (js/world/themes.js). */
+
+@font-face { font-family: "Chakra Petch"; font-weight: 400; font-display: swap; src: url("../vendor/fonts/chakra-petch-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Chakra Petch"; font-weight: 600; font-display: swap; src: url("../vendor/fonts/chakra-petch-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Chakra Petch"; font-weight: 700; font-display: swap; src: url("../vendor/fonts/chakra-petch-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: swap; src: url("../vendor/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 700; font-display: swap; src: url("../vendor/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); }
+
+:root {
+  --font: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+  --cut: 12px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+/* Arcane Lab: neutral slate, hextech cyan, brass */
+:root, [data-ui-theme="arcane"] {
+  color-scheme: dark;
+  --bg: #0a0e13;
+  --panel: rgba(13, 18, 25, .88);
+  --panel-2: rgba(22, 29, 38, .92);
+  --raised: rgba(140, 170, 200, .08);
+  --raised-2: rgba(140, 170, 200, .15);
+  --line: rgba(130, 165, 195, .24);
+  --line-strong: rgba(130, 165, 195, .5);
+  --text: #dbe6f0;
+  --muted: #8296a8;
+  --accent: #35e6ff;
+  --accent-ink: #021a20;
+  --accent-soft: rgba(53, 230, 255, .14);
+  --accent-2: #f2b84b;
+  --accent-2-soft: rgba(242, 184, 75, .15);
+  --warn: #ff3b68;
+  --warn-soft: rgba(255, 59, 104, .16);
+  --ok: #55f0a0;
+  --ghost: #b48cff;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  --glow: 0 0 16px rgba(53, 230, 255, .45);
+}
+
+/* Neon Noir: violet night, magenta and signal yellow */
+[data-ui-theme="neon"] {
+  color-scheme: dark;
+  --bg: #0b0714;
+  --panel: rgba(18, 11, 30, .88);
+  --panel-2: rgba(30, 20, 46, .92);
+  --raised: rgba(190, 150, 255, .09);
+  --raised-2: rgba(190, 150, 255, .17);
+  --line: rgba(190, 150, 255, .26);
+  --line-strong: rgba(255, 47, 208, .55);
+  --text: #efe6ff;
+  --muted: #9a8bb8;
+  --accent: #ff2fd0;
+  --accent-ink: #1f0019;
+  --accent-soft: rgba(255, 47, 208, .16);
+  --accent-2: #f9f002;
+  --accent-2-soft: rgba(249, 240, 2, .14);
+  --warn: #ff5a3c;
+  --warn-soft: rgba(255, 90, 60, .17);
+  --ok: #29ffc6;
+  --ghost: #4de1ff;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .6);
+  --glow: 0 0 16px rgba(255, 47, 208, .5);
+}
+
+/* Undercity: oxidised metal, toxic green, amber */
+[data-ui-theme="undercity"] {
+  color-scheme: dark;
+  --bg: #0b0d09;
+  --panel: rgba(17, 20, 13, .9);
+  --panel-2: rgba(28, 32, 21, .93);
+  --raised: rgba(200, 215, 150, .08);
+  --raised-2: rgba(200, 215, 150, .16);
+  --line: rgba(190, 205, 140, .24);
+  --line-strong: rgba(156, 255, 47, .5);
+  --text: #e6ecd4;
+  --muted: #8f987a;
+  --accent: #9cff2f;
+  --accent-ink: #0c1a00;
+  --accent-soft: rgba(156, 255, 47, .14);
+  --accent-2: #ff8a1f;
+  --accent-2-soft: rgba(255, 138, 31, .16);
+  --warn: #ff4343;
+  --warn-soft: rgba(255, 67, 67, .16);
+  --ok: #9cff2f;
+  --ghost: #4fe0c0;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .6);
+  --glow: 0 0 16px rgba(156, 255, 47, .4);
+}
+
+/* Clean Room: light, clinical, blue and orange */
+[data-ui-theme="cleanroom"] {
+  color-scheme: light;
+  --bg: #d7dde3;
+  --panel: rgba(250, 252, 253, .92);
+  --panel-2: rgba(238, 242, 245, .96);
+  --raised: rgba(20, 50, 80, .06);
+  --raised-2: rgba(20, 50, 80, .12);
+  --line: rgba(30, 60, 90, .2);
+  --line-strong: rgba(30, 60, 90, .45);
+  --text: #14222f;
+  --muted: #5d6f80;
+  --accent: #0a6fe8;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(10, 111, 232, .12);
+  --accent-2: #d95a00;
+  --accent-2-soft: rgba(217, 90, 0, .12);
+  --warn: #d5123a;
+  --warn-soft: rgba(213, 18, 58, .11);
+  --ok: #088a54;
+  --ghost: #6a35e0;
+  --shadow: 0 18px 44px rgba(40, 60, 80, .25);
+  --glow: 0 0 0 rgba(0, 0, 0, 0);
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-ui-theme="arcane">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0a0e13">
+  <title>Warehouse Interface</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/screens.css">
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="world" aria-label="Warehouse 3D view"></canvas>
+    <div id="labels"></div>
+  </div>
+
+  <div id="hud" hidden>
+    <header id="brand"></header>
+    <nav id="layerbar" aria-label="View layers"></nav>
+    <div id="rightcol">
+      <aside id="queue" aria-label="Instruction queue"></aside>
+      <aside id="inspector" hidden></aside>
+    </div>
+    <nav id="dock" aria-label="Main menu"></nav>
+    <section id="manual" hidden></section>
+    <div id="paused-banner" hidden></div>
+    <section id="timeline" hidden></section>
+    <div id="touchpad" hidden></div>
+    <div id="toasts" aria-live="polite"></div>
+    <div id="hover-tip" hidden></div>
+  </div>
+
+  <div id="panels"></div>
+  <div id="boot"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
